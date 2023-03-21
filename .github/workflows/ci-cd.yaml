@@ -14,7 +14,7 @@ env:
 
 jobs:
   code-analysis-and-testing:
-    if: false
+    #if: false
     name: Code analysis and testing
     runs-on: ubuntu-latest #ubuntu is a virtual machines on github servers
     timeout-minutes: 30
