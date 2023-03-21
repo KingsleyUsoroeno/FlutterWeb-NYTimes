@@ -35,3 +35,26 @@ jobs:
 
       - name: Flutter test
         run: flutter test
+
+
+  notification-job:
+    needs: [ code-analysis-and-testing ] # this basically tells our ci not to run this job if the required jobs have not been run
+    name: Notify WorkFlow Results
+    runs-on: ubuntu-latest
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v1
+      - name: Send mail
+        if: failure()
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          # username: ${{ secrets.MAIL_USERNAME }}
+          # password: ${{ secrets.MAIL_PASSWORD }}
+          subject: Github Actions Job result
+          body: Build job of ${{github.repository}} completed successfully! The Job worflow ${{ github.workflow }} of ${{ github.repository }} has result of ${{ env.WORKFLOW_CONCLUSION }}
+          to: kingsleyenou@gmail.com
+          from: From Github Action
+
+
+
