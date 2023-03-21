@@ -1,0 +1,37 @@
+name: Flutter CI + CD # name of the workflow that appears on github
+
+# what makes this workflow to be triggered
+on:
+  push:
+    branches: [ main ]
+    workflow_dispatch: # enables us the ability to run this workflow from the github console as well
+
+
+env:
+  FLUTTER_CHANNEL: 'stable' # 'stable', 'beta', or 'master', default to: 'stable'
+  FLUTTER_VERSION: '3.7.0'
+  XCODE_VERSION: '14.2'
+
+jobs:
+  code-analysis-and-testing:
+    if: false
+    name: Code analysis and testing
+    runs-on: ubuntu-latest #ubuntu is a virtual machines on github servers
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.FLUTTER_CHANNEL }}
+
+      - name: Get pub dependencies
+        run: flutter pub get
+
+      - name: Flutter analyze
+        run: flutter analyze
+
+      - name: Flutter test
+        run: flutter test
